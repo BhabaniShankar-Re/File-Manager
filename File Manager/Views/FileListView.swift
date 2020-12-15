@@ -8,24 +8,30 @@
 
 import SwiftUI
 
-class NewList: ObservableObject {
-    var name: [String] = []
-}
-
 
 struct FileListView: View {
-    @State private var filePaths: [FileModel] = []
+    @EnvironmentObject var tracker: Tracker
+    @State private var filePaths: [_File] = []
+    @State var shouldPresentFolderview: Bool = false
     
+
     let directoryPath: URL
+    
     var title: String {
-        if directoryPath == FileManager.default.sandboxDirectory {
+        if directoryPath == FilesManager.sandboxDirectory {
             return "SandBox"
-        }else { return ""}
+        }else { return directoryPath.lastPathComponent }
     }
     
     let columns = [
         GridItem(.adaptive(minimum: 110, maximum: 110), spacing: 6, alignment: .center)
     ]
+    
+    init(directoryPath: URL) {
+        self.directoryPath = directoryPath
+        //_filePaths = State(initialValue: FilesManager.contentsOfDirectory(at: directoryPath))
+       // let dt = DirectoryMinitor(for: directoryPath, queue: .main, handler: updateFileList)
+    }
     
     var body: some View {
         ScrollView {
@@ -45,16 +51,27 @@ struct FileListView: View {
             .padding(.horizontal)
         }
         .navigationBarTitle(Text(title), displayMode: .inline)
+        .navigationBarItems(trailing: MenuView(shouldPresetntFolderView: $shouldPresentFolderview))
         .onAppear(perform: {
-            filePaths = FileManager.default.contentsOfDirectory(at: directoryPath)
+            tracker.currentDirectory = directoryPath
+            withAnimation {
+                filePaths = FilesManager.contentsOfDirectory(at: directoryPath)
+            }
         })
+        .createNewFolderView(isPresented: $shouldPresentFolderview)
     }
+    
+    func updateFileList() {
+        filePaths = FilesManager.contentsOfDirectory(at: directoryPath)
+    }
+    
 }
 
-struct RootView_Previews: PreviewProvider {
+
+struct FileListView_Previews: PreviewProvider {
     
     static var previews: some View {
-        FileListView(directoryPath: FileManager.default.sandboxDirectory)
-            
+        FileListView(directoryPath: FilesManager.sandboxDirectory)
+        
     }
 }

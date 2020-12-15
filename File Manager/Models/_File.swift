@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FileModel: Identifiable {
+struct _File: Identifiable {
     var id: String {
         path.absoluteString
     }

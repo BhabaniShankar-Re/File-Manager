@@ -9,20 +9,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    var tracker = Tracker()
     
     var body: some View {
         NavigationView{
             VStack {
-                ProgressView("Device Memory", value: FileManager.default.systemConsumedSpace, total: FileManager.default.totalSystemSize)
-                    .accentColor(FileManager.default.colorForSystemConsumedSpace)
+                ProgressView("Device Memory", value: FilesManager.systemConsumedSpace, total: FilesManager.totalSystemSize)
+                    .accentColor(FilesManager.colorForSystemConsumedSpace)
                     .padding()
-                NavigationLink(destination: FileListView(directoryPath: FileManager.default.sandboxDirectory)){
+                NavigationLink(destination: FileListView(directoryPath: FilesManager.sandboxDirectory)){
                     SandBoxView()
-
                 }
             }
             .navigationTitle(Text("File Manager"))
         }
+        .environmentObject(tracker)
     }
 }
 

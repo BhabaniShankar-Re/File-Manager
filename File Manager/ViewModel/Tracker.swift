@@ -9,5 +9,13 @@
 import SwiftUI
 
 class Tracker: ObservableObject {
-    //@Published var 
+    @Published var isEditModeOn: Bool = false
+    
+    var currentDirectory: URL = FilesManager.sandboxDirectory
+    {
+        didSet{
+            print(currentDirectory)
+        }
+    }
+    var triggerDirectory: URL?
 }

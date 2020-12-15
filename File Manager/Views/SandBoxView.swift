@@ -25,7 +25,7 @@ struct SandBoxView: View {
                         Image(systemName: "chevron.right")
                             .foregroundColor(.orange)
                     }
-                    ProgressView(value: FileManager.default.sandboxDirectorySize, total: FileManager.default.systemConsumedSpace)
+                    ProgressView(value: FilesManager.sandboxDirectorySize, total: FilesManager.systemConsumedSpace)
                         .background(Color.orange)
                         .accentColor(.green)
                         .cornerRadius(3.0)

@@ -8,37 +8,36 @@
 
 import SwiftUI
 
-
-extension FileManager {
+class FilesManager{
     // System attributes
-    private var byteCountFormatter: ByteCountFormatter {
+    private static var byteCountFormatter: ByteCountFormatter {
         ByteCountFormatter()
     }
-    private var systemAttributes: [FileAttributeKey: Any] {
+    private static var systemAttributes: [FileAttributeKey: Any] {
         get {
-            let attributes = try? attributesOfFileSystem(forPath: "/")
+            let attributes = try? FileManager.default.attributesOfFileSystem(forPath: "/")
             return attributes ?? [:]
         }
     }
     
     // Application root path(Sandbox).
-    var sandboxDirectory: URL {
+    static var sandboxDirectory: URL {
         get {
-             return temporaryDirectory.deletingLastPathComponent()
+            return FileManager.default.temporaryDirectory.deletingLastPathComponent()
         }
     }
     
-    var sandboxDirectorySize: Double {
+    static var sandboxDirectorySize: Double {
         return calculateDirectorySize(at: sandboxDirectory)!
     }
     
-    var totalSystemSize: Double {
+    static var totalSystemSize: Double {
         get {
             return systemAttributes[.systemSize] as? Double ?? 1.0
         }
     }
     
-    var systemConsumedSpace: Double {
+    static var systemConsumedSpace: Double {
         get {
             let systemFreeSize = systemAttributes[.systemFreeSize] as? Double ?? 0.0
             return totalSystemSize - systemFreeSize
@@ -46,7 +45,7 @@ extension FileManager {
         }
     }
     
-    var colorForSystemConsumedSpace: Color {
+    static var colorForSystemConsumedSpace: Color {
         get{
             let color = colorAccordingToSize(systemConsumedSpace, totalSize: totalSystemSize)
             return color
@@ -54,7 +53,7 @@ extension FileManager {
     }
     
     ///  Provide color according to percentage size.
-    func colorAccordingToSize(_ size: Double, totalSize: Double) -> Color {
+    static func colorAccordingToSize(_ size: Double, totalSize: Double) -> Color {
         guard totalSize > 0 else {
             return .green
         }
@@ -71,10 +70,10 @@ extension FileManager {
         }
     }
     // Calculate Diskspace allocated to Directory.
-    func calculateDirectorySize(at url: URL) -> Double? {
+    static func calculateDirectorySize(at url: URL) -> Double? {
         guard let isReachable = try? url.checkResourceIsReachable(), isReachable, url.hasDirectoryPath else { return nil }
         
-        let enumurater = enumerator(at: url, includingPropertiesForKeys: [.totalFileAllocatedSizeKey])
+        let enumurater = FileManager.default.enumerator(at: url, includingPropertiesForKeys: [.totalFileAllocatedSizeKey])
         let paths = enumurater?.allObjects.compactMap({ (object) -> URL? in
             guard let path = object as? URL else { return nil }
             return path
@@ -89,13 +88,30 @@ extension FileManager {
         return Double(size)
     }
     
-    func contentsOfDirectory(at url: URL) -> [FileModel] {
-        let models = try? contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
-            .map({ (url) -> FileModel in
-                FileModel(path: url, isDirectory: url.hasDirectoryPath)
+    static func contentsOfDirectory(at url: URL) -> [_File] {
+        let models = try? FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants])
+            .map({ (url) -> _File in
+                _File(path: url, isDirectory: url.hasDirectoryPath)
             })
         return models ?? []
     }
+    
+    // return true on succes and return false on failure.
+    @discardableResult
+    static func createDirectory(at url: URL, dirName: String) -> Bool {
+        let directoryURL = url.appendingPathComponent(dirName)
+        do {
+            try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: false, attributes: nil)
+            return true
+        }catch {
+            return false
+        }
+    }
+}
+
+
+extension FileManager {
+    
 }
 
 
