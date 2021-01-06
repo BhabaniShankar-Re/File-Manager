@@ -9,10 +9,11 @@
 import SwiftUI
 
 class FilesManager{
-    // System attributes
+    
     private static var byteCountFormatter: ByteCountFormatter {
         ByteCountFormatter()
     }
+    // System attributes
     private static var systemAttributes: [FileAttributeKey: Any] {
         get {
             let attributes = try? FileManager.default.attributesOfFileSystem(forPath: "/")
@@ -106,6 +107,53 @@ class FilesManager{
         }catch {
             return false
         }
+    }
+    
+    // Both move and copy func return name of files those are not able to move or copy to destination by filemanager.
+    static func move(fileItems: Set<_File>, to dst: URL) -> [String] {
+        var nonMovedItems = [String]()
+        for item in fileItems {
+            do {
+                if item.path == dst.appendingPathComponent(item.name) {
+                    throw FileTransitionError.fileAlreadyExist
+                }
+                try FileManager.default.moveItem(at: item.path, to: dst.appendingPathComponent(item.name))
+            }catch {
+                nonMovedItems.append(item.name)
+            }
+        }
+        return nonMovedItems
+    }
+    
+    static func copy(fileItems: Set<_File>, to dst: URL) -> [String] {
+        var nonCopyedItems = [String]()
+        for item in fileItems {
+            do {
+                if item.path == dst.appendingPathComponent(item.name) {
+                    throw FileTransitionError.fileAlreadyExist
+                }
+                try FileManager.default.copyItem(at: item.path, to: dst.appendingPathComponent(item.name))
+            }catch {
+                nonCopyedItems.append(item.name)
+            }
+        }
+        return nonCopyedItems
+    }
+    
+    static func delete(items: Set<_File>) -> [String] {
+        var nonDeleteItems = [String]()
+        for item in items {
+            do {
+                try FileManager.default.removeItem(at: item.path)
+            }catch {
+                nonDeleteItems.append(item.name)
+            }
+        }
+        return nonDeleteItems
+    }
+    
+    enum FileTransitionError: Error {
+        case fileAlreadyExist
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000C403F259A7DAA00852C33 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000C403E259A7DAA00852C33 /* ToolbarView.swift */; };
 		005A92B525853CCE00C00C13 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A92B425853CCE00C00C13 /* Test.swift */; };
 		005C2BC425726F3800E06DED /* SandBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005C2BC325726F3800E06DED /* SandBoxView.swift */; };
 		0060462425777A7F00D476BB /* FilesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0060462325777A7F00D476BB /* FilesManager.swift */; };
@@ -17,6 +18,7 @@
 		00A9A3342581E0C700FD9FA0 /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A9A3332581E0C700FD9FA0 /* FolderView.swift */; };
 		00AF8B1B258072CF000268EC /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AF8B1A258072CF000268EC /* Tracker.swift */; };
 		00AF8B2425808F62000268EC /* File_ManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AF8B2325808F62000268EC /* File_ManagerTests.swift */; };
+		00B5AA7A2588F01B00361B20 /* FileHandlerQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B5AA792588F01B00361B20 /* FileHandlerQueue.swift */; };
 		00D6799F25717EDE0005F843 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D6799E25717EDE0005F843 /* AppDelegate.swift */; };
 		00D679A125717EDE0005F843 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D679A025717EDE0005F843 /* SceneDelegate.swift */; };
 		00D679A325717EDE0005F843 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D679A225717EDE0005F843 /* ContentView.swift */; };
@@ -51,6 +53,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000C403E259A7DAA00852C33 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		005A92B425853CCE00C00C13 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		005C2BC325726F3800E06DED /* SandBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandBoxView.swift; sourceTree = "<group>"; };
 		0060462325777A7F00D476BB /* FilesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesManager.swift; sourceTree = "<group>"; };
@@ -63,6 +66,7 @@
 		00AF8B2125808F62000268EC /* File ManagerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "File ManagerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00AF8B2325808F62000268EC /* File_ManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File_ManagerTests.swift; sourceTree = "<group>"; };
 		00AF8B2525808F62000268EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00B5AA792588F01B00361B20 /* FileHandlerQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHandlerQueue.swift; sourceTree = "<group>"; };
 		00D6799B25717EDE0005F843 /* File Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "File Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D6799E25717EDE0005F843 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		00D679A025717EDE0005F843 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +106,7 @@
 				00A9A3332581E0C700FD9FA0 /* FolderView.swift */,
 				00A9A32F2581D12900FD9FA0 /* MenuView.swift */,
 				00718E19257FC3A500D8DA5B /* FileView.swift */,
+				000C403E259A7DAA00852C33 /* ToolbarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -187,6 +192,7 @@
 		00DFB6A62583334A0083ABB4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				00B5AA792588F01B00361B20 /* FileHandlerQueue.swift */,
 				00DFB6A92583344A0083ABB4 /* View+Extnd.swift */,
 				005A92B425853CCE00C00C13 /* Test.swift */,
 			);
@@ -314,7 +320,9 @@
 				00718E1A257FC3A500D8DA5B /* FileView.swift in Sources */,
 				0060462425777A7F00D476BB /* FilesManager.swift in Sources */,
 				00DFB6AA2583344A0083ABB4 /* View+Extnd.swift in Sources */,
+				00B5AA7A2588F01B00361B20 /* FileHandlerQueue.swift in Sources */,
 				00D679A125717EDE0005F843 /* SceneDelegate.swift in Sources */,
+				000C403F259A7DAA00852C33 /* ToolbarView.swift in Sources */,
 				00A9A3342581E0C700FD9FA0 /* FolderView.swift in Sources */,
 				00D679A325717EDE0005F843 /* ContentView.swift in Sources */,
 			);

@@ -14,10 +14,12 @@ struct MenuView: View {
     @Binding var shouldPresetntFolderView: Bool
     
     var body: some View {
-        if tracker.isEditModeOn {
+        if (tracker.isEditModeOn || tracker.isTransitioning) {
             return AnyView(
                 Button("Cancel", action: {
                     tracker.isEditModeOn = false
+                    tracker.isTransitioning = false
+                    tracker.selectedItems = []
                 })
             )
         }else {

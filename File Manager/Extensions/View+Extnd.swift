@@ -19,7 +19,7 @@ class FolderViewPresentationValue: ObservableObject {
 
 extension View {
     
-    public func createNewFolderView(isPresented: Binding<Bool>) -> some View {
+    public func presentNewFolderView(isPresented: Binding<Bool>) -> some View {
         if isPresented.wrappedValue {
             return AnyView(ZStack{
                 self
@@ -48,6 +48,31 @@ extension View {
             return AnyView(self)
         }
     }
+    
+    /// To Show Toolbar with move, copy, delete button.
+    /// On apply this it behaves buggy.
+    public func showToolbar(isActive: Bool) -> some View {
+        if isActive {
+            return AnyView(ZStack(alignment: .bottom) {
+                self
+                
+                ToolbarView()
+                    .alignmentGuide(.bottom) { (D) -> CGFloat in
+                        D[.bottom] * 1.6
+                    }
+                    .padding()
+            })
+        }else {
+            return AnyView(self)
+        }
+//
+//        if isActive {
+//            return AnyView(ZStack{ self })
+//        }else {
+//            return AnyView(self)
+//        }
+    }
+    
 }
 
 

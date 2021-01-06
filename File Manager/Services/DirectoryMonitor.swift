@@ -7,12 +7,50 @@
 //
 
 import Foundation
+import Combine
 
-class DirectoryMinitor {
-    var onPathContentChange: () -> Void
+class DirectoryMonitor: ObservableObject {
+    private var fileDescriptor: Int32 = -1
+    private var openedDirectories: [Int32] = []
+    private var fileMonitorSource: DispatchSourceFileSystemObject?
+    var objectWillChange = PassthroughSubject<Void, Never>()
     
-    init(for path: URL, queue: DispatchQueue, handler: @escaping ()-> Void) {
-        onPathContentChange = handler
+    func startMonitoring(for directory: URL) {
+//        guard fileMonitorSource == nil, fileDescriptor == -1 else {
+//            return
+//        }
+        
+        // Open the Directory reference by the url
+        fileDescriptor = open(directory.path, O_EVTONLY)
+        openedDirectories.append(fileDescriptor)
+        fileMonitorSource = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fileDescriptor, eventMask: .write, queue: DispatchQueue.fileHandler)
+        
+        fileMonitorSource?.setEventHandler(handler: { [weak self] in
+            self?.onPathContentChange()
+        })
+        
+        fileMonitorSource?.setCancelHandler(handler: {
+            [weak self] in
+            guard let strongSelf = self else { return }
+            close(strongSelf.openedDirectories.first!)
+            strongSelf.openedDirectories.removeFirst()
+        })
+        
+        fileMonitorSource?.resume()
+    }
+    
+    func stopMonitoring() {
+        DispatchQueue.fileHandler.sync {
+            fileMonitorSource?.cancel()
+        }
+        
+    }
+    
+    func onPathContentChange() {
+        DispatchQueue.main.async {
+            self.objectWillChange.send()
+        }
+        
     }
     
     

@@ -12,8 +12,8 @@ import SwiftUI
 struct FileListView: View {
     @EnvironmentObject var tracker: Tracker
     @State private var filePaths: [_File] = []
+    @State private var navigateToPath: String? = nil
     @State var shouldPresentFolderview: Bool = false
-    
 
     let directoryPath: URL
     
@@ -29,49 +29,76 @@ struct FileListView: View {
     
     init(directoryPath: URL) {
         self.directoryPath = directoryPath
-        //_filePaths = State(initialValue: FilesManager.contentsOfDirectory(at: directoryPath))
-       // let dt = DirectoryMinitor(for: directoryPath, queue: .main, handler: updateFileList)
+        _filePaths = State(initialValue: FilesManager.contentsOfDirectory(at: directoryPath))
     }
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(filePaths) { item in
-                    if item.isDirectory {
-                        NavigationLink(
-                            destination: FileListView(directoryPath: item.path),
-                            label: {
-                                FileView(fileName: item.name, isDirectory: item.isDirectory)
-                            })
-                    }else {
-                        FileView(fileName: item.name, isDirectory: item.isDirectory)
+        ZStack(alignment: .bottom) {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 10) {
+                    ForEach(filePaths) { item in
+                        if item.isDirectory {
+                            
+                            NavigationLink(
+                                destination: FileListView(directoryPath: item.path), tag: item.id, selection: $navigateToPath,
+                                label: {
+                                    FileView(file: item, onTap: handleTapGesture(_:))
+                                        .onLongPressGesture {
+                                            print("long press")
+                                        }
+                                })
+                        }else {
+                            FileView(file: item, onTap: handleTapGesture(_ :))
+                        }
                     }
+                    
                 }
+                .padding(EdgeInsets(top: 0.0, leading: 16.0, bottom: 100.0, trailing: 16.0))
             }
-            .padding(.horizontal)
+            .navigationBarTitle(Text(title), displayMode: .inline)
+            
+            if (tracker.isEditModeOn || tracker.isTransitioning) {
+                ToolbarView()
+                    .alignmentGuide(.bottom) { (D) -> CGFloat in
+                        D[.bottom] * 1.6
+                    }
+                    .padding()
+            }
+            
         }
-        .navigationBarTitle(Text(title), displayMode: .inline)
         .navigationBarItems(trailing: MenuView(shouldPresetntFolderView: $shouldPresentFolderview))
-        .onAppear(perform: {
-            tracker.currentDirectory = directoryPath
+        .navigationBarBackButtonHidden(tracker.isEditModeOn)
+        .onReceive(tracker.directoryDidChangePublisher, perform: { _ in
             withAnimation {
                 filePaths = FilesManager.contentsOfDirectory(at: directoryPath)
             }
         })
-        .createNewFolderView(isPresented: $shouldPresentFolderview)
+        .onAppear(perform: {
+            tracker.currentDirectory = directoryPath
+        })
+        .presentNewFolderView(isPresented: $shouldPresentFolderview)
+        //.showToolbar(isActive: tracker.isEditModeOn)
     }
     
-    func updateFileList() {
-        filePaths = FilesManager.contentsOfDirectory(at: directoryPath)
+    func handleTapGesture(_ item: _File) {
+        if (!tracker.isEditModeOn || tracker.isTransitioning){
+            navigateToPath = item.id
+        }else if tracker.isEditModeOn, !tracker.selectedItems.contains(item) {
+            tracker.selectedItems.insert(item)
+        }else {
+            tracker.selectedItems.remove(item)
+        }
     }
     
 }
 
 
 struct FileListView_Previews: PreviewProvider {
+    static let trakcer = Tracker()
     
     static var previews: some View {
         FileListView(directoryPath: FilesManager.sandboxDirectory)
+            .environmentObject(trakcer)
         
     }
 }
