@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct SandBoxView: View {
+    @State private var sandboxSize = FilesManager.sandboxDirectorySize
     
     var body: some View {
         VStack {
@@ -25,7 +26,7 @@ struct SandBoxView: View {
                         Image(systemName: "chevron.right")
                             .foregroundColor(.orange)
                     }
-                    ProgressView(value: FilesManager.sandboxDirectorySize, total: FilesManager.systemConsumedSpace)
+                    ProgressView(value: sandboxSize, total: FilesManager.systemConsumedSpace)
                         .background(Color.orange)
                         .accentColor(.green)
                         .cornerRadius(3.0)
@@ -39,6 +40,9 @@ struct SandBoxView: View {
             Spacer()
         }
         .padding(20)
+        .onAppear() {
+            sandboxSize = FilesManager.sandboxDirectorySize
+        }
     }
     
 }

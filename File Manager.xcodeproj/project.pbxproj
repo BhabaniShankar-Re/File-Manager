@@ -77,6 +77,9 @@
 		00D679AC25717F080005F843 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00D679B2257180A50005F843 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
 		00DFB6A92583344A0083ABB4 /* View+Extnd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extnd.swift"; sourceTree = "<group>"; };
+		00FFB43925A65EE7000F7A3D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		00FFB43B25A6619E000F7A3D /* create_folder_filemanager.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = create_folder_filemanager.gif; sourceTree = "<group>"; };
+		00FFB43F25A661B2000F7A3D /* File_Manager.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = File_Manager.gif; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,8 +151,10 @@
 		00D6799225717EDD0005F843 = {
 			isa = PBXGroup;
 			children = (
+				00FFB43925A65EE7000F7A3D /* README.md */,
 				00D6799D25717EDE0005F843 /* File Manager */,
 				00AF8B2225808F62000268EC /* File ManagerTests */,
+				00FFB43A25A660E0000F7A3D /* Resources */,
 				00D6799C25717EDE0005F843 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -197,6 +202,15 @@
 				005A92B425853CCE00C00C13 /* Test.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		00FFB43A25A660E0000F7A3D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				00FFB43F25A661B2000F7A3D /* File_Manager.gif */,
+				00FFB43B25A6619E000F7A3D /* create_folder_filemanager.gif */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

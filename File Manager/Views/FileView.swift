@@ -83,7 +83,9 @@ struct FileView: View {
             .frame(minWidth: .zero, maxWidth: .infinity, minHeight: .zero, maxHeight: .infinity)
             .onTapGesture {
                 onTap(file)
-                isSelected.toggle()
+                if tracker.isEditModeOn {
+                    isSelected.toggle()
+                }
             }
             .onReceive(tracker.$isEditModeOn) { (isOn) in
                 if !isOn {

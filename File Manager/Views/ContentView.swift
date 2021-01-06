@@ -11,18 +11,23 @@ import SwiftUI
 struct ContentView: View {
     var tracker = Tracker()
     
+    @State var sandboxDirectories = FileListView(directoryPath: FilesManager.sandboxDirectory)
+    
     var body: some View {
         NavigationView{
             VStack {
                 ProgressView("Device Memory", value: FilesManager.systemConsumedSpace, total: FilesManager.totalSystemSize)
                     .accentColor(FilesManager.colorForSystemConsumedSpace)
                     .padding()
-                NavigationLink(destination: FileListView(directoryPath: FilesManager.sandboxDirectory)){
+                NavigationLink(destination: sandboxDirectories){
                     SandBoxView()
                 }
             }
             .navigationTitle(Text("File Manager"))
         }
+        .onReceive(tracker.directoryDidChangePublisher, perform: { (_) in
+            sandboxDirectories = FileListView(directoryPath: FilesManager.sandboxDirectory)
+        })
         .environmentObject(tracker)
     }
 }
